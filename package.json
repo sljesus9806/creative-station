@@ -1,0 +1,19 @@
+{
+  "name": "creative-station",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio web de Creative Station — papelería creativa. Catálogo, pedidos por WhatsApp, cotizaciones y panel de administración.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env server.js",
+    "dev": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env --watch server.js",
+    "reset-password": "node --disable-warning=ExperimentalWarning --env-file-if-exists=.env scripts/reset-password.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  }
+}
