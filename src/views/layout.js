@@ -1,10 +1,10 @@
 // Estructura común del sitio público: <head>, barra de anuncio, encabezado, pie y botón flotante de WhatsApp.
-const { html, raw, waLink, prettyPhone } = require('../util');
+const { html, raw, waLink, prettyPhone, siteConfig } = require('../util');
 const { icons, twinkle } = require('./icons');
 
 const FONTS = 'https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,0..100;1,9..144,400..700,0..100&family=Quicksand:wght@400..700&family=Pinyon+Script&display=swap';
 
-function layout({ s, title, description, body, path = '/', image, jsonld, bodyClass = '' }) {
+function layout({ s, title, description, body, path = '/', image, jsonld, bodyClass = '', extraHead }) {
   const fullTitle = title ? `${title} · ${s.business_name}` : `${s.business_name} · ${s.tagline}`;
   const desc = description || `${s.tagline} en ${s.city}. ${s.shipping_text}`;
   const nav = [
@@ -96,7 +96,7 @@ ${body}
 </footer>
 <a class="wa-float" href="${waGeneral}" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">${icons.whatsapp}</a>
 <div class="toast" role="status" aria-live="polite" data-toast></div>
-<script>window.CS = ${raw(JSON.stringify({ wa: s.whatsapp, name: s.business_name }))};</script>
+<script>window.CS = ${raw(JSON.stringify({ wa: s.whatsapp, name: s.business_name, city: s.city, base: siteConfig.base, static: siteConfig.static }).replace(/</g, '\\u003c'))};</script>${extraHead || ''}
 <script src="/js/site.js?v=1" defer></script>
 </body>
 </html>`;

@@ -95,7 +95,10 @@ function clean(s, max = 500) {
   return String(s ?? '').trim().slice(0, max);
 }
 
+/** Configuración global de render. En la versión estática (GitHub Pages) se activa `static` y `base`. */
+const siteConfig = { base: '', static: false, repo: '', branch: 'main' };
+
 module.exports = {
-  Safe, html, raw, esc, slugify, money, waNumber, waLink, prettyPhone,
+  siteConfig, Safe, html, raw, esc, slugify, money, waNumber, waLink, prettyPhone,
   parseJSON, nl2br, fmtDate, fmtDateTime, parseBlocks, clean,
 };

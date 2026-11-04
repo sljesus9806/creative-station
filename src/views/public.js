@@ -1,5 +1,5 @@
 // Páginas públicas: inicio, catálogo, producto, pedido, cotización.
-const { html, raw, esc, money, nl2br, parseBlocks, waLink } = require('../util');
+const { html, raw, esc, money, nl2br, parseBlocks, waLink, siteConfig } = require('../util');
 const { icons, bow, twinkle } = require('./icons');
 const { layout } = require('./layout');
 
@@ -15,7 +15,8 @@ function priceLabel(p) {
 
 function productCard(p, i = 0) {
   const img = p.images[0] || ph;
-  return html`<article class="p-card" style="--tilt:${(i % 3) - 1}deg">
+  const text = [p.name, p.short_desc, p.category_name, ...(p.occasions || [])].join(' ').toLowerCase();
+  return html`<article class="p-card" style="--tilt:${(i % 3) - 1}deg" data-occ="${(p.occasions || []).join('|')}" data-text="${text}">
   <a href="/producto/${p.slug}" class="p-card-link">
     <div class="p-card-img">
       <img src="${img}" alt="${p.name}" loading="lazy" width="400" height="500">
@@ -239,15 +240,14 @@ function catalog({ s, categories, products, current, q, occasion }) {
         ${occasions.map((o) => html`<a role="listitem" class="chip chip-sm ${occasion === o ? 'is-on' : ''}" href="${current ? `/catalogo/${current.slug}` : '/catalogo'}${keep({ ocasion: occasion === o ? '' : o })}">${o}</a>`)}
       </div>` : ''}
     </div>
-    ${products.length
-      ? html`<p class="result-count">${products.length} ${products.length === 1 ? 'producto' : 'productos'}${q ? html` para “${q}”` : ''}</p>
-             <div class="p-grid">${products.map(productCard)}</div>`
-      : html`<div class="empty">
-          ${bow('var(--blush-200)', 'empty-bow')}
-          <h2 class="h3">No encontramos productos con esos filtros</h2>
-          <p>Pero seguro lo podemos hacer. Cuéntanos tu idea y te cotizamos.</p>
-          <div class="cta-row center"><a class="btn btn-ghost" href="/catalogo">Ver todo</a><a class="btn btn-primary" href="/cotizar">Pedir cotización</a></div>
-        </div>`}
+    <p class="result-count" data-count ${products.length ? '' : raw('hidden')}>${products.length} ${products.length === 1 ? 'producto' : 'productos'}${q ? html` para “${q}”` : ''}</p>
+    <div class="p-grid" data-grid>${products.map(productCard)}</div>
+    <div class="empty" data-empty ${products.length ? raw('hidden') : ''}>
+      ${bow('var(--blush-200)', 'empty-bow')}
+      <h2 class="h3">No encontramos productos con esos filtros</h2>
+      <p>Pero seguro lo podemos hacer. Cuéntanos tu idea y te cotizamos.</p>
+      <div class="cta-row center"><a class="btn btn-ghost" href="/catalogo">Ver todo</a><a class="btn btn-primary" href="/cotizar">Pedir cotización</a></div>
+    </div>
   </div>
 </section>
 <section class="section pt0">
@@ -297,7 +297,7 @@ function product({ s, p, related }) {
 
       ${orderable ? html`
       <form class="card personalize" data-add-form
-        data-product="${JSON.stringify({ slug: p.slug, name: p.name, price: p.price, unit: p.unit, min: p.min_qty, image: imgs[0] })}">
+        data-product="${JSON.stringify({ slug: p.slug, name: p.name, price: p.price, unit: p.unit, min: p.min_qty, image: imgs[0], photo: p.custom_fields.some(isPhotoField) })}">
         <h2 class="h4">${icons.pencil} Personaliza tu pedido</h2>
         <div class="fields">
           ${p.custom_fields.filter((f) => !isPhotoField(f)).map((f, i) => html`<label class="field" for="${fieldId(f, i)}">
@@ -424,7 +424,7 @@ function cart({ s }) {
 const EVENT_TYPES = ['Cumpleaños', 'XV años', 'Boda', 'Despedida de soltera', 'Baby shower', 'Primer añito', 'Bautizo / Comunión', 'Graduación', 'Empresa / evento corporativo', 'Otro'];
 const BUDGETS = ['Aún no lo sé', 'Menos de $500', '$500 – $1,000', '$1,000 – $2,500', '$2,500 – $5,000', 'Más de $5,000'];
 
-function quote({ s, categories, product, preset = {}, errors = [], values = {} }) {
+function quote({ s, categories, product, preset = {}, errors = [], values = {}, productsIndex }) {
   const v = (k) => values[k] ?? '';
   const interests = new Set(values.interests || (product?.category_name ? [product.category_name] : []));
   const OCC_TO_EVENT = { 'Bodas': 'Boda', 'Baby & primer añito': 'Primer añito', 'Bautizo y comunión': 'Bautizo / Comunión' };
@@ -474,14 +474,16 @@ function quote({ s, categories, product, preset = {}, errors = [], values = {} }
         <div class="fields">
           <label class="field field-full"><span>Temática y colores</span><input name="theme" maxlength="160" value="${v('theme')}" placeholder="Ej. coquette con cerezas, rosa y rojo"></label>
           <label class="field field-full"><span>Cuéntanos tu idea *</span><textarea name="details" rows="4" required maxlength="2000" placeholder="Nombre de quien festeja, edad, frases, piezas que necesitas…">${v('details')}</textarea></label>
-          <div class="field field-full">
+          ${siteConfig.static
+            ? html`<p class="hint field-full">${icons.image} ¿Tienes fotos de inspiración? Al enviar tu solicitud se abre WhatsApp; mándalas en ese mismo chat.</p>`
+            : html`<div class="field field-full">
             <span>Fotos de referencia <small>(opcional, hasta 3)</small></span>
             <label class="upload" data-upload>
               <input type="file" name="images" accept="image/*" multiple data-upload-input>
               ${icons.image}<span data-upload-label>Toca para subir imágenes de inspiración</span>
             </label>
             <div class="upload-previews" data-upload-previews></div>
-          </div>
+          </div>`}
         </div>
       </fieldset>
 
@@ -503,6 +505,13 @@ function quote({ s, categories, product, preset = {}, errors = [], values = {} }
       <button class="btn btn-primary btn-lg block" type="submit" data-submit>Enviar solicitud de cotización ${icons.arrow}</button>
       <p class="tiny center">Te contactamos por WhatsApp. Tus datos solo se usan para tu cotización.</p>
     </form>
+    <div class="card done" data-quote-done hidden>
+      ${bow('var(--blush-400)', 'done-bow')}
+      <p class="kicker">Folio <span data-folio></span></p>
+      <h2 class="h2">¡Tu solicitud está lista!</h2>
+      <p>Toca el botón para enviarnos el resumen por WhatsApp. Si tienes fotos de referencia, mándalas en ese mismo chat.</p>
+      <a class="btn btn-wa btn-lg" data-wa-link href="#" target="_blank" rel="noopener">${icons.whatsapp} Enviar por WhatsApp</a>
+    </div>
     <aside class="quote-aside">
       <div class="card soft">
         ${bow('var(--blush-400)', 'aside-bow')}
@@ -518,7 +527,10 @@ function quote({ s, categories, product, preset = {}, errors = [], values = {} }
     </aside>
   </div>
 </section>`;
-  return layout({ s, title: 'Cotizar', body, path: '/cotizar', description: 'Pide una cotización de papelería creativa personalizada para tu evento.' });
+  const extraHead = siteConfig.static && productsIndex
+    ? raw(`<script>window.CS_PRODUCTS = ${JSON.stringify(productsIndex).replace(/</g, '\\u003c')};</script>`)
+    : '';
+  return layout({ s, title: 'Cotizar', body, path: '/cotizar', description: 'Pide una cotización de papelería creativa personalizada para tu evento.', extraHead });
 }
 
 function quoteDone({ s, folio, waUrl }) {

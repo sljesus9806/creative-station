@@ -2,6 +2,43 @@
 
 Sitio de **papelería creativa** con catálogo, pedidos por WhatsApp, cotizaciones personalizadas y panel de administración.
 
+El mismo código funciona de dos formas:
+
+| | **GitHub Pages (gratis, para pruebas)** | **Con servidor (Node)** |
+|---|---|---|
+| Catálogo, producto, "Mi pedido", cotizar | ✅ | ✅ |
+| Pedidos y cotizaciones | Llegan directo a WhatsApp | Se guardan en el panel con folio y van a WhatsApp |
+| Fotos de referencia en la cotización | Se mandan por WhatsApp | Se suben desde el formulario |
+| Panel `/admin` | Productos, categorías y ajustes (guarda en GitHub) | Todo, incluida la bandeja de pedidos y cotizaciones |
+| Hosting | GitHub Pages | VPS, Railway, Render con disco… |
+
+## Versión GitHub Pages (gratis)
+
+Los productos, categorías y ajustes viven en `content/catalogo.json` y las fotos en `content/uploads/`.
+En cada push a `main`, GitHub Actions (`.github/workflows/pages.yml`) corre `scripts/build-static.js` y publica el sitio.
+
+**Activarla (una sola vez):**
+1. El repositorio debe ser **público**; Pages gratis no funciona con repos privados. Se cambia en *Settings → General → Danger Zone → Change visibility*.
+2. *Settings → Pages → Build and deployment → Source*: elige **GitHub Actions**.
+3. *Actions* → **Publicar en GitHub Pages** → *Run workflow*, o haz cualquier push.
+4. El sitio queda en `https://USUARIO.github.io/creative-station/` y el panel en `…/creative-station/admin/`.
+
+**Entrar al panel:** crea un token en https://github.com/settings/personal-access-tokens/new con
+*Repository access → Only select repositories → creative-station* y *Permissions → Contents → Read and write*.
+Pégalo en el panel; se guarda solo en ese navegador. Cada cambio es un commit y el sitio se actualiza en 1–2 minutos.
+
+**Probar en tu computadora:**
+
+```bash
+BASE_PATH=/creative-station node scripts/build-static.js
+```
+
+Esto genera `_site/`. Para verlo tal cual, sírvelo de forma que `/creative-station/` apunte a esa carpeta.
+
+---
+
+## Versión con servidor
+
 - **Público:** inicio, catálogo con categorías, ocasiones y búsqueda, ficha de producto con personalización, "Mi pedido" (carrito que se envía por WhatsApp) y formulario de cotización con fotos de referencia.
 - **Panel (`/admin`):** productos (fotos, precio opcional, personalización, destacados, duplicar), categorías, bandeja de cotizaciones y pedidos con estados y notas, y ajustes (WhatsApp, anuncio, promo, pasos y preguntas frecuentes).
 
