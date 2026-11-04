@@ -7,6 +7,12 @@ import { CONFIG } from './config.js';
 import { DEFAULT_SETTINGS, DEMO_CATEGORIES, DEMO_PRODUCTS } from './demo-data.js';
 
 export const isConfigured = Boolean(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_KEY);
+/** true cuando el sitio trabaja con el catálogo de ejemplo (sin Supabase o con la base aún sin crear). */
+export let usingDemo = !isConfigured;
+
+/** La base existe pero todavía no se corrió supabase/schema.sql. */
+export const isMissingSchema = (e) => /PGRST20[25]|42P01|42883/.test(String(e?.code || ''))
+  || /schema cache|does not exist|Could not find the (table|function)/i.test(String(e?.message || ''));
 
 const SUPABASE_JS = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/+esm';
 const CATALOG_BUCKET = 'catalogo';
@@ -42,6 +48,12 @@ export async function fetchSite() {
     sb.from('categories').select('*').eq('active', true).order('sort_order').order('name'),
     sb.from('products').select('*').eq('active', true).order('sort_order').order('created_at', { ascending: false }),
   ]);
+  const missing = [settings, categories, products].find((r) => r.error && isMissingSchema(r.error));
+  if (missing) {
+    console.warn('Supabase está conectado pero falta correr supabase/schema.sql y seed.sql. Mostrando el catálogo de ejemplo.', missing.error);
+    usingDemo = true;
+    return { settings: { ...DEFAULT_SETTINGS }, categories: structuredClone(DEMO_CATEGORIES), products: structuredClone(DEMO_PRODUCTS), demo: true };
+  }
   return { settings: settingsFromRows(unwrap(settings)), categories: unwrap(categories), products: unwrap(products), demo: false };
 }
 

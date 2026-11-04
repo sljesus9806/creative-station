@@ -72,16 +72,16 @@ function render({ s, products, categories, visibleCats }) {
 }
 
 async function main() {
-  siteConfig.uploads = api.isConfigured;
   let data;
   try {
     data = await api.fetchSite();
+    siteConfig.uploads = !api.usingDemo;
   } catch (e) {
     console.error(e);
     root.innerHTML = `<div style="max-width:520px;margin:15vh auto;padding:24px;text-align:center;font-family:system-ui">
       <h1 style="font-size:1.4rem">No pudimos cargar el catálogo</h1>
       <p>Revisa tu conexión y vuelve a intentar. Si el problema sigue, escríbenos por WhatsApp.</p>
-      <p><a href="">Reintentar</a></p></div>`;
+      <p><a href="">Reintentar</a> · <a href="https://wa.me/526691669855" target="_blank" rel="noopener">WhatsApp</a></p></div>`;
     return;
   }
   const ctx = prepare(data);

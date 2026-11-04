@@ -206,7 +206,7 @@ export function initInteractions({ api, settings }) {
       try {
         const items = store.read();
         let result;
-        if (api.isConfigured) {
+        if (!api.usingDemo) {
           const customer = { name: data.name, phone: data.phone, city: data.city, event_date: data.event_date, delivery: data.delivery, notes: data.notes };
           const r = await api.createOrder(customer, items.map(({ slug, qty, custom }) => ({ slug, qty, custom })));
           result = { folio: r.folio, items: r.items, total: r.total == null ? null : Number(r.total), hasUnpriced: r.has_unpriced, needsPhoto: r.needs_photo };
@@ -282,7 +282,7 @@ export function initInteractions({ api, settings }) {
       try {
         let folio;
         let images = [];
-        if (api.isConfigured) {
+        if (!api.usingDemo) {
           const files = fileInput ? [...fileInput.files].slice(0, 3) : [];
           for (let i = 0; i < files.length; i++) {
             btn.textContent = `Subiendo foto ${i + 1} de ${files.length}…`;

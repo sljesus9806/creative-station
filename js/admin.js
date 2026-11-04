@@ -49,8 +49,10 @@ function uniqueSlug(list, name, id) {
   while (list.some((x) => x.slug === slug && x.id !== id)) slug = `${base}-${i++}`;
   return slug;
 }
+const SCHEMA_HINT = 'La base de datos aún no está lista: en Supabase → SQL Editor corre supabase/schema.sql y después supabase/seed.sql.';
 const errText = (e) => {
   const m = (e && (e.message || e.error_description)) || '';
+  if (api.isMissingSchema(e)) return SCHEMA_HINT;
   if (/duplicate key/i.test(m)) return 'Ya existe otro elemento con ese nombre. Usa un nombre distinto.';
   if (/row-level security|permission denied/i.test(m)) return 'Tu cuenta no tiene permiso para hacer esto.';
   if (/Failed to fetch|NetworkError/i.test(m)) return 'Sin conexión. Revisa tu internet e intenta de nuevo.';
