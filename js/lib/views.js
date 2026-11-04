@@ -1,9 +1,9 @@
 // Páginas públicas: inicio, catálogo, producto, pedido, cotización.
-const { html, raw, esc, money, nl2br, parseBlocks, waLink, siteConfig } = require('../util');
-const { icons, bow, twinkle } = require('./icons');
-const { layout } = require('./layout');
+import { html, raw, esc, money, nl2br, parseBlocks, waLink, siteConfig } from './util.js';
+import { icons, bow, twinkle } from './icons.js';
+import { layout } from './layout.js';
 
-const ph = '/img/brand/favicon-512.png';
+const ph = 'img/brand/favicon-512.png';
 
 /** Permite resaltar palabras escribiéndolas entre *asteriscos* en los ajustes. */
 const emph = (text) => raw(esc(text || '').replace(/\*([^*]+)\*/g, '<em>$1</em>'));
@@ -228,6 +228,7 @@ function catalog({ s, categories, products, current, q, occasion }) {
         <input type="search" name="q" value="${q || ''}" placeholder="Buscar: toppers, stickers, vasos…">
       </label>
       ${occasion ? html`<input type="hidden" name="ocasion" value="${occasion}">` : ''}
+      ${current ? html`<input type="hidden" name="cat" value="${current.slug}">` : ''}
       <button class="btn btn-primary btn-sm" type="submit">Buscar</button>
     </form>
     <div class="filter-rows">
@@ -424,7 +425,7 @@ function cart({ s }) {
 const EVENT_TYPES = ['Cumpleaños', 'XV años', 'Boda', 'Despedida de soltera', 'Baby shower', 'Primer añito', 'Bautizo / Comunión', 'Graduación', 'Empresa / evento corporativo', 'Otro'];
 const BUDGETS = ['Aún no lo sé', 'Menos de $500', '$500 – $1,000', '$1,000 – $2,500', '$2,500 – $5,000', 'Más de $5,000'];
 
-function quote({ s, categories, product, preset = {}, errors = [], values = {}, productsIndex }) {
+function quote({ s, categories, product, preset = {}, errors = [], values = {} }) {
   const v = (k) => values[k] ?? '';
   const interests = new Set(values.interests || (product?.category_name ? [product.category_name] : []));
   const OCC_TO_EVENT = { 'Bodas': 'Boda', 'Baby & primer añito': 'Primer añito', 'Bautizo y comunión': 'Bautizo / Comunión' };
@@ -440,7 +441,7 @@ function quote({ s, categories, product, preset = {}, errors = [], values = {}, 
 </section>
 <section class="section pt0">
   <div class="wrap quote-layout">
-    <form class="card quote-form" method="post" action="/cotizar" enctype="multipart/form-data" data-quote-form>
+    <form class="card quote-form" data-quote-form novalidate>
       ${errors.length ? html`<div class="form-error" role="alert">${errors.map((e) => html`<p>${e}</p>`)}</div>` : ''}
       ${product ? html`<div class="quote-product">
         <img src="${product.images[0] || ph}" alt="" width="64" height="64">
@@ -474,7 +475,7 @@ function quote({ s, categories, product, preset = {}, errors = [], values = {}, 
         <div class="fields">
           <label class="field field-full"><span>Temática y colores</span><input name="theme" maxlength="160" value="${v('theme')}" placeholder="Ej. coquette con cerezas, rosa y rojo"></label>
           <label class="field field-full"><span>Cuéntanos tu idea *</span><textarea name="details" rows="4" required maxlength="2000" placeholder="Nombre de quien festeja, edad, frases, piezas que necesitas…">${v('details')}</textarea></label>
-          ${siteConfig.static
+          ${!siteConfig.uploads
             ? html`<p class="hint field-full">${icons.image} ¿Tienes fotos de inspiración? Al enviar tu solicitud se abre WhatsApp; mándalas en ese mismo chat.</p>`
             : html`<div class="field field-full">
             <span>Fotos de referencia <small>(opcional, hasta 3)</small></span>
@@ -527,27 +528,7 @@ function quote({ s, categories, product, preset = {}, errors = [], values = {}, 
     </aside>
   </div>
 </section>`;
-  const extraHead = siteConfig.static && productsIndex
-    ? raw(`<script>window.CS_PRODUCTS = ${JSON.stringify(productsIndex).replace(/</g, '\\u003c')};</script>`)
-    : '';
-  return layout({ s, title: 'Cotizar', body, path: '/cotizar', description: 'Pide una cotización de papelería creativa personalizada para tu evento.', extraHead });
-}
-
-function quoteDone({ s, folio, waUrl }) {
-  const body = html`
-<section class="section">
-  <div class="wrap narrow">
-    <div class="card done center">
-      ${bow('var(--blush-400)', 'done-bow')}
-      <p class="kicker">Folio ${folio}</p>
-      <h1 class="h2">¡Recibimos tu solicitud!</h1>
-      <p>Para atenderte más rápido, envíanos el resumen por WhatsApp. Si subiste fotos de referencia, ya las tenemos guardadas.</p>
-      <a class="btn btn-wa btn-lg" href="${waUrl}" target="_blank" rel="noopener">${icons.whatsapp} Enviar por WhatsApp</a>
-      <p class="mt"><a class="link-arrow" href="/catalogo">Seguir viendo el catálogo ${icons.arrow}</a></p>
-    </div>
-  </div>
-</section>`;
-  return layout({ s, title: 'Solicitud enviada', body, path: '/cotizar' });
+  return layout({ s, title: 'Cotizar', body, path: '/cotizar', description: 'Pide una cotización de papelería creativa personalizada para tu evento.' });
 }
 
 function notFound({ s }) {
@@ -563,4 +544,4 @@ function notFound({ s }) {
   return layout({ s, title: 'No encontrado', body });
 }
 
-module.exports = { home, catalog, product, cart, quote, quoteDone, notFound, priceLabel, EVENT_TYPES };
+export { home, catalog, product, cart, quote, notFound, priceLabel, EVENT_TYPES };

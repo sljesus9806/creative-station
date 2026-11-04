@@ -1,4 +1,5 @@
 // Utilidades compartidas: escape de HTML, slugs, dinero, teléfonos y WhatsApp.
+// Módulo ES para el navegador (no necesita build).
 
 class Safe {
   constructor(s) { this.s = s; }
@@ -95,10 +96,10 @@ function clean(s, max = 500) {
   return String(s ?? '').trim().slice(0, max);
 }
 
-/** Configuración global de render. En la versión estática (GitHub Pages) se activa `static` y `base`. */
-const siteConfig = { base: '', static: false, repo: '', branch: 'main' };
+/** Configuración de render: `uploads` indica si se pueden subir fotos (Supabase configurado). */
+export const siteConfig = { uploads: false };
 
-module.exports = {
-  siteConfig, Safe, html, raw, esc, slugify, money, waNumber, waLink, prettyPhone,
+export {
+  Safe, html, raw, esc, slugify, money, waNumber, waLink, prettyPhone,
   parseJSON, nl2br, fmtDate, fmtDateTime, parseBlocks, clean,
 };

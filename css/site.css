@@ -631,3 +631,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Pantalla de carga mientras llegan los datos */
+.boot { min-height: 70vh; display: grid; place-content: center; justify-items: center; gap: .6rem; color: var(--ink-soft); font-weight: 600; text-align: center; padding: 24px; }
+.boot img { animation: boot-spin 1.6s ease-in-out infinite; }
+@keyframes boot-spin { 50% { transform: rotate(-18deg) scale(1.06); } }

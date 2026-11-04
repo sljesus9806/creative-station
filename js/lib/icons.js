@@ -1,5 +1,5 @@
 // Íconos y adornos SVG en línea.
-const { raw } = require('../util');
+import { raw } from './util.js';
 
 const i = (path, extra = '') => raw(`<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ${extra}>${path}</svg>`);
 
@@ -48,4 +48,4 @@ function twinkle(cls = '', color = 'currentColor') {
   return raw(`<svg class="twinkle ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path fill="${color}" d="M12 0c.7 6.4 2.6 9.9 12 12-9.4 2.1-11.3 5.6-12 12-.7-6.4-2.6-9.9-12-12 9.4-2.1 11.3-5.6 12-12Z"/></svg>`);
 }
 
-module.exports = { icons, bow, twinkle };
+export { icons, bow, twinkle };
