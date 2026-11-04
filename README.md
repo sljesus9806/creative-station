@@ -45,7 +45,7 @@ Mientras `js/config.js` no tenga los datos de Supabase, el sitio funciona en **m
 
 ### 1. Publicar el sitio (GitHub Pages, gratis)
 1. El repositorio debe ser **público**.
-2. **Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `(root)` → Save**.
+2. **Settings → Pages → Build and deployment → Source: GitHub Actions**. El workflow [`.github/workflows/pages.yml`](.github/workflows/pages.yml) publica el sitio en cada push a `main` (también funciona *Deploy from a branch → `main` / `(root)`*).
 3. En uno o dos minutos el sitio queda en `https://sljesus9806.github.io/creative-station/` (en modo demo hasta hacer el paso 2).
 
 ### 2. Crear la base de datos en Supabase
