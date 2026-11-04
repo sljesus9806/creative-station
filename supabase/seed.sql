@@ -15,7 +15,7 @@ insert into public.settings (key, value) values
   ('announcement', 'Agenda de NOVIEMBRE abierta ✨ Envíos a todo México'),
   ('hero_title', 'Papelería creativa para celebrar *a tu manera*'),
   ('hero_text', 'Toppers, stickers, sobre platos, vasos y detalles personalizados para cumpleaños, XV años, bodas y graduaciones. Diseñamos cada pieza con tu nombre, tu foto y tu estilo.'),
-  ('shipping_text', 'Hacemos envíos a todo México y entregas en Mazatlán.'),
+  ('shipping_text', 'Hacemos envíos a todo México. En Mazatlán, entregas por DiDi o recolección en domicilio.'),
   ('promo_active', '1'),
   ('promo_kicker', 'Temporada de graduaciones'),
   ('promo_title', 'Paquetes de graduación'),
@@ -29,13 +29,16 @@ Escoge productos del catálogo o cuéntanos tu idea: temática, colores, nombre 
 Te cotizamos
 Te respondemos por WhatsApp con precio, tiempos y una propuesta de diseño.
 
+Apartas tu fecha
+Se aparta la fecha con el 50% de anticipo por depósito o transferencia a la cuenta proporcionada.
+
 Apruebas tu diseño
-Confirmas tu pedido y revisamos contigo cada detalle antes de imprimir.
+Ya realizado el depósito, confirmas tu pedido y revisamos contigo cada detalle antes de imprimir.
 
 Lo hacemos realidad
-Producimos tus piezas con mucho cariño y las enviamos a todo México o las recoges en Mazatlán.'),
+Producimos tus piezas con mucho cariño. Enviamos a todo México y en Mazatlán entregamos por DiDi o recolección en domicilio.'),
   ('faq', '¿Hacen envíos?
-Sí, enviamos a todo México. También puedes recoger tu pedido en Mazatlán. El costo del envío se calcula según tu ciudad.
+Sí, enviamos a todo México por paquetería; el costo se calcula según tu ciudad. En Mazatlán las entregas son por DiDi o con recolección en domicilio.
 
 ¿Con cuánto tiempo debo hacer mi pedido?
 Te recomendamos apartar tu fecha con anticipación porque la agenda se llena rápido. Al cotizar te confirmamos los tiempos exactos de tu pedido.
@@ -47,7 +50,7 @@ Te recomendamos apartar tu fecha con anticipación porque la agenda se llena rá
 Después de enviar tu pedido o cotización, mándanos la foto por WhatsApp en la mejor calidad posible.
 
 ¿Cómo se paga?
-Te compartimos los datos y las formas de pago por WhatsApp al confirmar tu pedido.')
+Tu fecha se aparta con el 50% de anticipo por depósito o transferencia a la cuenta que te proporcionamos por WhatsApp.')
 on conflict (key) do nothing;
 
 -- Categorías

@@ -301,7 +301,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .torn { position: absolute; left: 0; right: 0; height: 22px; background: var(--torn) repeat-x; background-size: 600px 22px; }
 .torn-top { top: -1px; }
 .torn-bottom { bottom: -1px; transform: scaleY(-1); }
-.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; counter-reset: s; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2.4rem 1.2rem; counter-reset: s; }
 .step {
   position: relative; background: var(--white); border-radius: 24px; padding: 2.2rem 1.3rem 1.4rem;
   border: 2px dashed var(--lavanda-200); text-align: center;
@@ -318,6 +318,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .step:nth-child(2) .step-n { background: var(--chicle); }
 .step:nth-child(3) .step-n { background: var(--cereza); }
 .step:nth-child(4) .step-n { background: var(--lavanda-700); }
+.step:nth-child(5) .step-n { background: var(--chicle); }
 .step h3 { font-family: var(--f-display); font-variation-settings: 'SOFT' 100; font-size: 1.2rem; margin: 0 0 .35rem; }
 .step p { margin: 0; font-size: .95rem; color: var(--ink-soft); line-height: 1.5; }
 
@@ -553,6 +554,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ---------- Responsive ---------- */
 @media (max-width: 1020px) {
   .steps { grid-template-columns: repeat(2, 1fr); row-gap: 2.4rem; }
+  .step:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: min(100%, calc(50% - .6rem)); }
   .cat-grid { grid-template-columns: repeat(3, 1fr); }
   .ig-grid { grid-template-columns: repeat(3, 1fr); }
   .nav-wa span { display: none; }
@@ -613,6 +615,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem .8rem; }
   .cat-name { font-size: 1rem; }
   .steps { grid-template-columns: 1fr; }
+  .step:last-child:nth-child(odd) { width: 100%; }
   .step { transform: none !important; }
   .ig-grid { grid-template-columns: repeat(3, 1fr); gap: .5rem; }
   .ig-grid a { border-width: 3px; border-radius: 12px; }

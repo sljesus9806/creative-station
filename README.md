@@ -53,6 +53,7 @@ Mientras `js/config.js` no tenga los datos de Supabase, el sitio funciona en **m
    - Nombre: `creative-station`. Región: la más cercana (por ejemplo *West US*). Guarda la contraseña de la base de datos.
 2. Ve a **SQL Editor → New query**, pega todo [`supabase/schema.sql`](supabase/schema.sql) y dale **Run**.
 3. En otra query pega [`supabase/seed.sql`](supabase/seed.sql) y dale **Run**. Así se cargan las 8 categorías, los 15 productos de ejemplo y los textos del sitio.
+   > Si ya habías corrido `seed.sql` antes de noviembre de 2026, corre también [`supabase/actualizacion-pasos-entregas.sql`](supabase/actualizacion-pasos-entregas.sql) para tener los pasos con anticipo y las entregas por DiDi.
 
 ### 3. Crear la cuenta de la dueña
 1. **Authentication → Users → Add user → Create new user**: su correo, una contraseña y marca **Auto Confirm User**.

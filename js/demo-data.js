@@ -12,7 +12,7 @@ export const DEFAULT_SETTINGS = {
   "announcement": "Agenda de NOVIEMBRE abierta ✨ Envíos a todo México",
   "hero_title": "Papelería creativa para celebrar *a tu manera*",
   "hero_text": "Toppers, stickers, sobre platos, vasos y detalles personalizados para cumpleaños, XV años, bodas y graduaciones. Diseñamos cada pieza con tu nombre, tu foto y tu estilo.",
-  "shipping_text": "Hacemos envíos a todo México y entregas en Mazatlán.",
+  "shipping_text": "Hacemos envíos a todo México. En Mazatlán, entregas por DiDi o recolección en domicilio.",
   "promo_active": "1",
   "promo_kicker": "Temporada de graduaciones",
   "promo_title": "Paquetes de graduación",
@@ -20,8 +20,8 @@ export const DEFAULT_SETTINGS = {
   "promo_cta": "Quiero mi paquete",
   "promo_link": "/cotizar?evento=Graduación",
   "occasions": "Cumpleaños, XV años, Bodas, Despedida de soltera, Graduación, Baby & primer añito, Bautizo y comunión",
-  "steps": "Elige o imagina\nEscoge productos del catálogo o cuéntanos tu idea: temática, colores, nombre y fecha.\n\nTe cotizamos\nTe respondemos por WhatsApp con precio, tiempos y una propuesta de diseño.\n\nApruebas tu diseño\nConfirmas tu pedido y revisamos contigo cada detalle antes de imprimir.\n\nLo hacemos realidad\nProducimos tus piezas con mucho cariño y las enviamos a todo México o las recoges en Mazatlán.",
-  "faq": "¿Hacen envíos?\nSí, enviamos a todo México. También puedes recoger tu pedido en Mazatlán. El costo del envío se calcula según tu ciudad.\n\n¿Con cuánto tiempo debo hacer mi pedido?\nTe recomendamos apartar tu fecha con anticipación porque la agenda se llena rápido. Al cotizar te confirmamos los tiempos exactos de tu pedido.\n\n¿Puedo pedir un diseño que no está en el catálogo?\n¡Claro! Todo es personalizable. Usa el formulario de cotización o escríbenos por WhatsApp con tus ideas y fotos de referencia.\n\n¿Cómo envío la foto para mis stickers o toppers?\nDespués de enviar tu pedido o cotización, mándanos la foto por WhatsApp en la mejor calidad posible.\n\n¿Cómo se paga?\nTe compartimos los datos y las formas de pago por WhatsApp al confirmar tu pedido."
+  "steps": "Elige o imagina\nEscoge productos del catálogo o cuéntanos tu idea: temática, colores, nombre y fecha.\n\nTe cotizamos\nTe respondemos por WhatsApp con precio, tiempos y una propuesta de diseño.\n\nApartas tu fecha\nSe aparta la fecha con el 50% de anticipo por depósito o transferencia a la cuenta proporcionada.\n\nApruebas tu diseño\nYa realizado el depósito, confirmas tu pedido y revisamos contigo cada detalle antes de imprimir.\n\nLo hacemos realidad\nProducimos tus piezas con mucho cariño. Enviamos a todo México y en Mazatlán entregamos por DiDi o recolección en domicilio.",
+  "faq": "¿Hacen envíos?\nSí, enviamos a todo México por paquetería; el costo se calcula según tu ciudad. En Mazatlán las entregas son por DiDi o con recolección en domicilio.\n\n¿Con cuánto tiempo debo hacer mi pedido?\nTe recomendamos apartar tu fecha con anticipación porque la agenda se llena rápido. Al cotizar te confirmamos los tiempos exactos de tu pedido.\n\n¿Puedo pedir un diseño que no está en el catálogo?\n¡Claro! Todo es personalizable. Usa el formulario de cotización o escríbenos por WhatsApp con tus ideas y fotos de referencia.\n\n¿Cómo envío la foto para mis stickers o toppers?\nDespués de enviar tu pedido o cotización, mándanos la foto por WhatsApp en la mejor calidad posible.\n\n¿Cómo se paga?\nTu fecha se aparta con el 50% de anticipo por depósito o transferencia a la cuenta que te proporcionamos por WhatsApp."
 };
 
 export const DEMO_CATEGORIES = [

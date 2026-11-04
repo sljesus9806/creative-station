@@ -8,6 +8,18 @@ const ph = 'img/brand/favicon-512.png';
 /** Permite resaltar palabras escribiéndolas entre *asteriscos* en los ajustes. */
 const emph = (text) => raw(esc(text || '').replace(/\*([^*]+)\*/g, '<em>$1</em>'));
 
+/** Formas de entrega: paquetería a todo México; en Mazatlán por DiDi o recolección en domicilio. */
+function deliveryOptions(s, selected) {
+  const city = String(s.city || 'Mazatlán').split(',')[0].trim();
+  const opts = [
+    ['Paquetería (todo México)', 'Envío por paquetería a todo México'],
+    [`DiDi (${city})`, `Entrega por DiDi en ${city}`],
+    [`Recolección en domicilio (${city})`, `Recolección en domicilio en ${city}`],
+  ];
+  const sel = opts.some(([val]) => val === selected) ? selected : opts[0][0];
+  return opts.map(([val, label]) => html`<label class="radio"><input type="radio" name="delivery" value="${val}" ${val === sel ? raw('checked') : ''}> ${label}</label>`);
+}
+
 function priceLabel(p) {
   if (p.price == null) return p.mode === 'cotizacion' ? 'Precio a cotizar' : 'Precio según diseño';
   return `${p.price_from ? 'Desde ' : ''}${money(p.price)} / ${p.unit || 'pieza'}`;
@@ -394,8 +406,7 @@ function cart({ s }) {
         <label class="field"><span>Fecha del evento</span><input name="event_date" type="date"></label>
         <fieldset class="field">
           <legend>Entrega</legend>
-          <label class="radio"><input type="radio" name="delivery" value="Envío a domicilio" checked> Envío a domicilio</label>
-          <label class="radio"><input type="radio" name="delivery" value="Recoger en ${s.city}"> Recoger en ${s.city}</label>
+          ${deliveryOptions(s, '')}
         </fieldset>
         <label class="field"><span>Comentarios</span><textarea name="notes" rows="2" maxlength="600"></textarea></label>
         <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -497,8 +508,7 @@ function quote({ s, categories, product, preset = {}, errors = [], values = {} }
           <label class="field"><span>Ciudad y estado *</span><input name="city" required maxlength="80" placeholder="Ej. Guadalajara, Jalisco" value="${v('city')}"></label>
           <fieldset class="field field-full">
             <legend>Entrega</legend>
-            <label class="radio"><input type="radio" name="delivery" value="Envío a domicilio" ${v('delivery') !== `Recoger en ${s.city}` ? raw('checked') : ''}> Envío a domicilio</label>
-            <label class="radio"><input type="radio" name="delivery" value="Recoger en ${s.city}" ${v('delivery') === `Recoger en ${s.city}` ? raw('checked') : ''}> Recoger en ${s.city}</label>
+            ${deliveryOptions(s, v('delivery'))}
           </fieldset>
         </div>
       </fieldset>
